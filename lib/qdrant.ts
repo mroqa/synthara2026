@@ -3,7 +3,7 @@ import { QdrantClient } from '@qdrant/js-client-rest';
 const QDRANT_URL = process.env.QDRANT_URL!;
 const QDRANT_API_KEY = process.env.QDRANT_API_KEY!;
 export const COLLECTION_NAME = process.env.QDRANT_COLLECTION || 'synthara_memories';
-export const VECTOR_SIZE = 768; // text-embedding-004 dimension
+export const VECTOR_SIZE = 3072; // gemini-embedding-2 dimension
 
 let _client: QdrantClient | null = null;
 
@@ -30,6 +30,18 @@ export async function ensureCollection(): Promise<void> {
       },
     });
     console.log(`[Qdrant] Created collection: ${COLLECTION_NAME}`);
+  }
+
+  // Ensure 'playerId' has a payload index of type 'keyword' for filtering
+  try {
+    await client.createPayloadIndex(COLLECTION_NAME, {
+      field_name: 'playerId',
+      field_schema: 'keyword',
+      wait: true,
+    });
+    console.log(`[Qdrant] Ensured payload index on 'playerId'`);
+  } catch (err) {
+    console.warn(`[Qdrant] Warning ensuring payload index:`, err);
   }
 }
 

@@ -11,11 +11,9 @@ function getGenAI(): GoogleGenerativeAI {
   return _genAI;
 }
 
-// ─── Text Embeddings ────────────────────────────────────────────────────────
-
 export async function embedText(text: string): Promise<number[]> {
   const genAI = getGenAI();
-  const model = genAI.getGenerativeModel({ model: 'text-embedding-004' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-embedding-2' });
   const result = await model.embedContent(text);
   return result.embedding.values;
 }
@@ -38,7 +36,7 @@ export async function generateQuest(
   memories: Array<{ id: string; outcome: string; trigger: string; timestamp: string; location: string }>
 ): Promise<GeneratedQuest> {
   const genAI = getGenAI();
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const memorySummary = memories.length > 0
     ? memories.map((m, i) =>
@@ -101,7 +99,7 @@ export async function generateNPCReflection(
   memories: Array<{ outcome: string; timestamp: string }>
 ): Promise<string> {
   const genAI = getGenAI();
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const memorySummary = memories
     .slice(0, 3)
