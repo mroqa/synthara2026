@@ -63,7 +63,7 @@ export default function CreatePage() {
   };
 
   return (
-    <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem',
+    <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(1rem, 4vw, 2rem)',
       background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.15), transparent 60%), var(--color-void)' }}>
 
       <div style={{ width: '100%', maxWidth: '800px' }} className="animate-fadeInUp">
@@ -102,7 +102,7 @@ export default function CreatePage() {
           <label style={{ display: 'block', fontFamily: 'var(--font-display)', fontSize: '0.8rem', letterSpacing: '0.1em', color: 'var(--color-text-secondary)', marginBottom: '1rem', textTransform: 'uppercase' }}>
             Choose Your Archetype
           </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem' }}>
+          <div className="archetype-grid-mobile" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem' }}>
             {ARCHETYPES.map((a) => (
               <div
                 key={a.id}

@@ -176,9 +176,9 @@ export default function NPCDialogue({ npc, player, onClose, onQuestAccepted }: N
 
         {/* NPC Header */}
         <div style={{
-          padding: '1.5rem 1.5rem 1rem',
+          padding: 'clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem) 1rem',
           borderBottom: '1px solid var(--color-border)',
-          display: 'flex', alignItems: 'center', gap: '1rem',
+          display: 'flex', alignItems: 'center', gap: '0.75rem',
           background: 'linear-gradient(180deg, rgba(124,58,237,0.1), transparent)',
         }}>
           <div style={{
@@ -198,22 +198,22 @@ export default function NPCDialogue({ npc, player, onClose, onQuestAccepted }: N
           </div>
           {/* Memory recall indicator */}
           {phase === 'generating' && (
-            <div className="memory-recall">
+            <div className="memory-recall" style={{ flexShrink: 0 }}>
               <div className="memory-recall-dot" />
-              Recalling memories...
+              <span style={{ display: 'inline' }}>Recalling...</span>
             </div>
           )}
           {(phase === 'quest' || phase === 'accepted') && memoriesUsed > 0 && (
-            <div className="memory-recall" style={{ background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.3)', color: '#34d399' }}>
+            <div className="memory-recall" style={{ background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.3)', color: '#34d399', flexShrink: 0 }}>
               <span>🧠</span>
-              {memoriesUsed} memories retrieved
+              <span>{memoriesUsed}</span>
             </div>
           )}
           <button onClick={onClose} style={{ color: 'var(--color-text-muted)', fontSize: '1.2rem', padding: '0.25rem', lineHeight: 1, background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
         </div>
 
         {/* Dialogue Content */}
-        <div style={{ padding: '1.5rem' }}>
+        <div style={{ padding: 'clamp(1rem, 3vw, 1.5rem)' }}>
 
           {/* NPC Greeting */}
           <div style={{

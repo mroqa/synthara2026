@@ -492,8 +492,104 @@ h4 { font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
 }
 
 /* ─── Responsive ────────────────────────────────────────────────────────── */
+
+/* Ensure all interactive elements meet 44px touch target minimum */
 @media (max-width: 768px) {
   .game-layout { flex-direction: column; }
   .game-sidebar { display: none; }
-  .dialogue-box { width: 95vw; }
+  .dialogue-box { width: 96vw; }
+
+  /* Larger touch targets */
+  .btn { min-height: 44px; }
+  .btn-sm { min-height: 36px; padding: var(--space-2) var(--space-3); }
+
+  /* Archetype cards: 2 per row on mobile */
+  .archetype-grid-mobile {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Quest cards: more compact */
+  .quest-card { padding: var(--space-3); }
+
+  /* Dialogue box inner padding */
+  .dialogue-inner-pad { padding: 1rem !important; }
 }
+
+@media (max-width: 480px) {
+  /* Archetype cards: 1 per row on very small screens */
+  .archetype-grid-mobile {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce glow effects slightly on low-end mobile (performance) */
+  .glow-text {
+    text-shadow:
+      0 0 8px rgba(124, 58, 237, 0.7),
+      0 0 20px rgba(124, 58, 237, 0.3);
+  }
+}
+
+/* ─── Mobile Bottom Tab Bar ─────────────────────────────────────────────── */
+.mobile-tab-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-tab-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(8, 8, 16, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-2) var(--space-4);
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+    gap: var(--space-2);
+  }
+
+  .mobile-tab-bar-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: var(--space-2) var(--space-1);
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-height: 52px;
+  }
+
+  .mobile-tab-bar-btn .tab-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .mobile-tab-bar-btn.active {
+    color: var(--color-arcane-light);
+    background: rgba(124, 58, 237, 0.12);
+  }
+
+  .mobile-tab-bar-btn.active .tab-icon {
+    filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.8));
+  }
+
+  /* Safe area padding for game page content on mobile */
+  .game-mobile-content {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}
+

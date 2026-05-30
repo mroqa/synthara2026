@@ -46,7 +46,7 @@ export default function LandingPage() {
       }} />
 
       {/* Hero Content */}
-      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '2rem', maxWidth: '700px' }}>
+      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: 'clamp(1rem, 4vw, 2rem)', maxWidth: '700px', width: '100%' }}>
 
         {/* Rune icon */}
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }} className="animate-float">
@@ -103,13 +103,13 @@ export default function LandingPage() {
         </p>
 
         {/* Auth buttons */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', width: '100%' }}>
           <button
             id="btn-google-login"
             className="btn btn-primary btn-lg"
             onClick={handleGoogleLogin}
             disabled={loading}
-            style={{ width: '280px', fontSize: '0.9rem' }}
+            style={{ width: 'min(280px, 100%)', fontSize: '0.9rem' }}
           >
             {loading ? <div className="spinner" style={{ width: '18px', height: '18px' }} /> : (
               <>
@@ -129,7 +129,7 @@ export default function LandingPage() {
             className="btn btn-ghost"
             onClick={handleGuestLogin}
             disabled={loading}
-            style={{ width: '280px' }}
+            style={{ width: 'min(280px, 100%)' }}
           >
             ⚔ Enter as Guest
           </button>
