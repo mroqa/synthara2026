@@ -145,6 +145,27 @@ export default function LandingPage() {
             <span key={tag} className="tag">{tag}</span>
           ))}
         </div>
+
+        {/* Copyright details */}
+        <p style={{ marginTop: '2rem', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
+          All copyrights reserved by{" "}
+          <a
+            href="https://www.linkedin.com/in/mroqa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--color-gold)', textDecoration: 'none', transition: 'color var(--transition-fast)' }}
+            onMouseEnter={e => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.color = 'var(--color-gold-light)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.textDecoration = 'none';
+              e.currentTarget.style.color = 'var(--color-gold)';
+            }}
+          >
+            Mohammed Roqa
+          </a>.
+        </p>
       </div>
     </main>
   );

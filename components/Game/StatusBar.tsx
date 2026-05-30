@@ -52,6 +52,27 @@ export default function StatusBar({ player }: StatusBarProps) {
 
       <div style={{ flex: 1 }} />
 
+      {/* Copyrights */}
+      <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', marginRight: '1.5rem' }}>
+        © All copyrights reserved by{" "}
+        <a
+          href="https://www.linkedin.com/in/mroqa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'var(--color-gold)', textDecoration: 'none', transition: 'color var(--transition-fast)' }}
+          onMouseEnter={e => {
+            e.currentTarget.style.textDecoration = 'underline';
+            e.currentTarget.style.color = 'var(--color-gold-light)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.textDecoration = 'none';
+            e.currentTarget.style.color = 'var(--color-gold)';
+          }}
+        >
+          Mohammed Roqa
+        </a>
+      </span>
+
       {/* Player name + archetype */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
