@@ -30,15 +30,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const hasConfig = !!firebaseConfig.apiKey;
 
-const realAuth = getAuth(app);
-const realDb = getFirestore(app);
+// Initialize Firebase safely (avoid throwing error during static build if apiKey is missing)
+const app = hasConfig
+  ? (getApps().length ? getApp() : initializeApp(firebaseConfig))
+  : null;
+
+const realAuth = app ? getAuth(app) : null;
+const realDb = app ? getFirestore(app) : null;
 
 // Check if we are in Mock/Local fallback mode
 export function isMockMode(): boolean {
-  if (typeof window === 'undefined') return false;
+  if (!hasConfig) return true;
+  if (typeof window === 'undefined') return true;
   return localStorage.getItem('synthara_mock_auth') === 'true';
 }
 
@@ -77,13 +82,16 @@ export const auth: any = {
         displayName: 'Guest Traveler',
       } as any;
     }
-    return realAuth.currentUser;
+    return realAuth ? realAuth.currentUser : null;
   }
 };
 
 export async function signInWithPopup(authInstance: any, provider: any) {
+  if (isMockMode()) {
+    return { user: auth.currentUser };
+  }
   try {
-    return await firebaseSignInWithPopup(realAuth, provider);
+    return await firebaseSignInWithPopup(realAuth!, provider);
   } catch (err) {
     console.warn('[Firebase Auth] Sign in with popup failed, falling back to local guest session:', err);
     enableMockMode();
@@ -92,9 +100,12 @@ export async function signInWithPopup(authInstance: any, provider: any) {
 }
 
 export async function signInAnonymously(authInstance: any) {
+  if (isMockMode()) {
+    return { user: auth.currentUser };
+  }
   try {
     // Attempt real Firebase sign-in first
-    return await firebaseSignInAnonymously(realAuth);
+    return await firebaseSignInAnonymously(realAuth!);
   } catch (err) {
     console.warn('[Firebase Auth] Anonymous sign-in failed, falling back to local guest session:', err);
     enableMockMode();
@@ -110,7 +121,7 @@ export function onAuthStateChanged(authInstance: any, callback: (user: any) => v
     }, 50);
     return () => {};
   }
-  return firebaseOnAuthStateChanged(realAuth, callback);
+  return firebaseOnAuthStateChanged(realAuth!, callback);
 }
 
 export async function signOut(authInstance: any) {
@@ -121,11 +132,11 @@ export async function signOut(authInstance: any) {
     }
     return;
   }
-  return await firebaseSignOut(realAuth);
+  return await firebaseSignOut(realAuth!);
 }
 
 // ─── Unified Firestore Interfaces ──────────────────────────────────────────
-export const db = realDb;
+export const db = realDb as any;
 
 export function doc(dbInstance: any, collectionName: string, ...pathSegments: string[]) {
   if (isMockMode()) {
@@ -134,7 +145,7 @@ export function doc(dbInstance: any, collectionName: string, ...pathSegments: st
       path: [collectionName, ...pathSegments].join('/'),
     } as any;
   }
-  return firebaseDoc(realDb, collectionName, ...pathSegments);
+  return firebaseDoc(realDb!, collectionName, ...pathSegments);
 }
 
 export function collection(dbInstance: any, collectionName: string, ...pathSegments: string[]) {
@@ -144,7 +155,7 @@ export function collection(dbInstance: any, collectionName: string, ...pathSegme
       path: [collectionName, ...pathSegments].join('/'),
     } as any;
   }
-  return firebaseCollection(realDb, collectionName, ...pathSegments);
+  return firebaseCollection(realDb!, collectionName, ...pathSegments);
 }
 
 export async function getDoc(docRef: any) {
